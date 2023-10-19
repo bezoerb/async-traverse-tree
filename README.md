@@ -31,7 +31,7 @@ Here's a simple example of how to use `async-traverse-tree` with the updated imp
 
 ```javascript
 // Import the 'traverse' function from 'async-traverse-tree'
-import { asyncMap } from 'async-traverse-tree';
+import { traverse } from 'async-traverse-tree';
 
 // Define a custom mapper function
 const mapper = async (key, value) => {
@@ -43,7 +43,7 @@ const mapper = async (key, value) => {
 const data = /* Your data structure here */;
 
 // Asynchronously traverse and map the data
-mapObj(data, mapper)
+traverse(data, mapper)
   .then(result => {
     // Process the result
     console.log(result);
