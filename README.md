@@ -1,6 +1,7 @@
 # async-traverse-tree
 
 [![npm version](https://img.shields.io/npm/v/async-traverse-tree.svg)](https://www.npmjs.com/package/async-traverse-tree)
+[![Build Status](https://github.com/bezoerb/async-traverse-tree/workflows/CI/badge.svg)](https://github.com/bezoerb/async-traverse-tree/actions?workflow=CI)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bezoerb/async-traverse-tree/blob/main/LICENSE)
 
 `async-traverse-tree` is a lightweight, asynchronous library for traversing and mapping tree-like data structures.
