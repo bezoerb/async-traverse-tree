@@ -22,11 +22,11 @@ test("should return a new object with the same keys and traversed values", async
       },
     },
   };
-  const reviver = (key, value) => {
+  const mapper = (key, value) => {
     return typeof value === "string" ? value.toUpperCase() : value;
   };
 
-  const result = await traverse(input, reviver);
+  const result = await traverse(input, mapper);
   t.like(result, expected);
 });
 
@@ -47,9 +47,9 @@ test("should return a new array with the same elements and traversed values", as
       bar: "WORLD",
     },
   ];
-  const reviver = (key, value) =>
+  const mapper = (key, value) =>
     typeof value === "string" ? value.toUpperCase() : value;
-  const result = await traverse(input, reviver);
+  const result = await traverse(input, mapper);
   t.like(result, expected);
 });
 
@@ -67,7 +67,7 @@ test("should handle null and undefined values", async (t) => {
   t.like(result, expected);
 });
 
-test("should handle Promises returned by the reviver function", async (t) => {
+test("should handle Promises returned by the mapper function", async (t) => {
   const input = {
     foo: "hello",
     bar: "world",
@@ -76,21 +76,21 @@ test("should handle Promises returned by the reviver function", async (t) => {
     foo: "HELLO",
     bar: "WORLD",
   };
-  const reviver = async (key, value) =>
+  const mapper = async (key, value) =>
     typeof value === "string"
       ? await Promise.resolve(value.toUpperCase())
       : value;
-  const result = await traverse(input, reviver);
+  const result = await traverse(input, mapper);
   t.like(result, expected);
 });
 
-test("should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),reviver)", async (t) => {
+test("should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),mapper)", async (t) => {
   const data = [
     { a: 1, b: true, c: { x: 1 }, d: [1, { y: 2 }] },
     "abc",
     { empty: [{ remove: "me" }] },
   ];
-  const reviver = (key, value) => {
+  const mapper = (key, value) => {
     if (key === "a") {
       return 10;
     }
@@ -108,8 +108,8 @@ test("should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),rev
     }
   };
 
-  const expected = JSON.parse(JSON.stringify(data), reviver);
-  const result = await traverse(data, reviver);
+  const expected = JSON.parse(JSON.stringify(data), mapper);
+  const result = await traverse(data, mapper);
   t.is(result, expected);
 });
 
@@ -119,20 +119,20 @@ test("should be faster than JSON.parse", async (t) => {
     bar: "world",
     arr: ["a", "b", "c"],
   };
-  const reviver = (key, value) =>
+  const mapper = (key, value) =>
     typeof value === "string" ? value.toUpperCase() : value;
 
   const iterations = Array(1000000).fill(0);
 
   const startTraverse = Date.now();
   for (const _ of iterations) {
-    await traverse(input, reviver);
+    await traverse(input, mapper);
   }
   const timeTraverse = Date.now() - startTraverse;
 
   const startNative = Date.now();
   for (const _ of iterations) {
-    JSON.parse(JSON.stringify(input), reviver);
+    JSON.parse(JSON.stringify(input), mapper);
   }
   const timeNative = Date.now() - startNative;
 

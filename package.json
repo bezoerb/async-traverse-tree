@@ -1,5 +1,5 @@
 {
-  "name": "async-map-tree",
+  "name": "async-traverse-tree",
   "version": "1.0.0",
   "description": "Asynchronously iterates and transforms tree-like structures.",
   "exports": "./index.js",
@@ -26,9 +26,7 @@
     "email": "ben@sommerlaune.com"
   },
   "devDependencies": {
-    "ava": "^5.3.1",
-    "jest": "^29.7.0",
-    "vitest": "^0.34.6"
+    "ava": "^5.3.1"
   },
   "license": "MIT"
 }

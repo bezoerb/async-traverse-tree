@@ -1,18 +1,3 @@
-/**
- * Matches any [primitive value](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
- */
-function isPrimitive(x) {
-  return [
-    "null",
-    "undefined",
-    "string",
-    "number",
-    "bigint",
-    "boolean",
-    "symbol",
-  ].includes(typeof x);
-}
-
 const isObjectLike = (value) =>
   value !== null &&
   typeof value === "object" &&
@@ -20,6 +5,9 @@ const isObjectLike = (value) =>
   !(value instanceof Error) &&
   !(value instanceof Date) &&
   !(globalThis.Blob && value instanceof globalThis.Blob);
+
+
+const isTraversable = (value) => Array.isArray(value) || isObjectLike(value);
 
 /**
  * Recursively traverses an object or array and applies a function to each value.
@@ -45,11 +33,9 @@ export const traverse = async (
 
   const data = mapper ? await mapper(key, input) : input;
 
-  if (!data || isPrimitive(data)) {
-    return data;
-  }
-
-  isSeen.set(input, data);
+  if (isTraversable(data)) {
+    isSeen.set(input, data);
+  }  
 
   if (Array.isArray(data)) {
     const resultPromises = Array(data.length);
