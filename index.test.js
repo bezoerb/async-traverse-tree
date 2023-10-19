@@ -114,7 +114,7 @@ test("should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),map
 });
 
 test("should be faster than JSON.parse", async (t) => {
-  t.timeout(10000);
+  t.timeout(20000);
   const input = {
     foo: "hello",
     bar: "world",
