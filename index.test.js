@@ -8,12 +8,19 @@ test("should return the input if it is a primitive", async (t) => {
 });
 
 test("should return a new object with the same keys and traversed values", async (t) => {
+  const blob = globalThis.Blob ? new globalThis.Blob() : null;
+  const date = new Date();
+  const regexp = new RegExp(/foo/);
+  const error = new Error("foo");
+  const specialValues = [blob, date, regexp, error];
+
   const input = {
     foo: {
       bar: {
         baz: "hello world",
       },
     },
+    specialValues,
   };
   const expected = {
     foo: {
@@ -21,6 +28,7 @@ test("should return a new object with the same keys and traversed values", async
         baz: "HELLO WORLD",
       },
     },
+    specialValues,
   };
   const mapper = (key, value) => {
     return typeof value === "string" ? value.toUpperCase() : value;
@@ -137,7 +145,10 @@ test("should be faster than JSON.parse", async (t) => {
   }
   const timeNative = Date.now() - startNative;
 
-  t.true(timeTraverse < timeNative);
+  t.true(
+    timeTraverse < timeNative,
+    `${timeTraverse} should be less than ${timeNative}`
+  );
 });
 
 test("should handle circular references", async (t) => {
