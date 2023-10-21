@@ -11,7 +11,6 @@ const isObjectLike = (value) =>
  * Mainly the same as JSON.parse(JSON.stringify(input, reviver)) but faster & async.
  * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#Using_the_reviver_parameter
  *
- * Used to modify the storyblok response.
  * @param input The object or array to traverse.
  * @param mapper An optional function to apply to each value during traversal.
  * @param key The current key being traversed (used for error messages).
