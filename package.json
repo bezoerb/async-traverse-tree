@@ -1,6 +1,6 @@
 {
   "name": "async-traverse-tree",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Asynchronously iterates and transforms tree-like structures.",
   "exports": "./index.js",
   "type": "module",
