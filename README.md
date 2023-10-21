@@ -53,16 +53,3 @@ traverse(data, mapper)
     console.error(error);
   });
 ```
-
-## Additional Notes
-
-The library now includes an updated implementation with an `isPrimitive` function for detecting primitive values, enhancing the overall functionality of `async-traverse-tree`.
-
-## Contributing
-
-We welcome contributions from the community. If you'd like to contribute to this project, please follow our [Contribution Guidelines](CONTRIBUTING.md).
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
