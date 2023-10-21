@@ -160,10 +160,6 @@ test("should handle circular references", async (t) => {
   object.array2 = object.array;
   object.array.push(object);
 
-  const result = await traverse(object, (_, val) =>
-    typeof val === "string" ? val.toUpperCase() : val
-  );
-
   const expected = {
     one: "ONE",
     array: ["TWO"],
@@ -172,5 +168,33 @@ test("should handle circular references", async (t) => {
   expected.array2 = expected.array;
   expected.array.push(expected);
 
+  const result = await traverse(object, (_, val) =>
+    typeof val === "string" ? val.toUpperCase() : val
+  );
+
   t.deepEqual(result, expected);
+});
+
+test("should not modify source object", async (t) => {
+  const source = {
+    object: { foo: "bar" },
+    array: ["two"],
+  };
+
+  const result = await traverse(source, (_, val) =>
+    typeof val === "string" ? val.toUpperCase() : val
+  );
+
+  const expectedResult = {
+    object: { foo: "BAR" },
+    array: ["TWO"],
+  };
+
+  const expectedSource = {
+    object: { foo: "bar" },
+    array: ["two"],
+  };
+
+  t.deepEqual(result, expectedResult);
+  t.deepEqual(source, expectedSource);
 });
