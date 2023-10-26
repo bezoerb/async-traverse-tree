@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "c8 ava",
-    "coverage": "c8 report --reporter=text-lcov > coverage/tests.lcov",
+    "coverage": "c8 report --reporter=lcov",
     "test:ci": "npm run test && npm run coverage"
   },
   "files": [
