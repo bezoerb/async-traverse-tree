@@ -54,3 +54,8 @@ traverse(data, mapper)
     console.error(error);
   });
 ```
+
+## Motivation
+
+An easy way to iterate over an object-like structure is to use `JSON.parse(JSON.stringify(obj), (key, value) => ... )`.\
+The problem with this approach is that it can't handle circular references and is synchronous. `async-traverse-tree` can act like an async drop-in replacement for that which can also handle circular references.
