@@ -1,6 +1,6 @@
 const isObjectLike = (value) =>
   value !== null &&
-  typeof value === "object" &&
+  typeof value === 'object' &&
   !(value instanceof RegExp) &&
   !(value instanceof Error) &&
   !(value instanceof Date) &&
@@ -17,7 +17,7 @@ const isObjectLike = (value) =>
  * @param isSeen WeakMap of objects that have already been traversed (used to prevent circular references).
  * @returns A Promise that resolves to the traversed object or array.
  */
-const _traverse = async (source, mapper, key = "", isSeen = new WeakMap()) => {
+const _traverse = async (source, mapper, key = '', isSeen = new WeakMap()) => {
   if (isSeen.has(source)) {
     return isSeen.get(source);
   }
@@ -26,7 +26,9 @@ const _traverse = async (source, mapper, key = "", isSeen = new WeakMap()) => {
 
   if (Array.isArray(data)) {
     const result = [...data];
-    isSeen.set(source, result);
+    try {
+      isSeen.set(source, result);
+    } catch {}
     for (let i = 0; i < data.length; i++) {
       result[i] = await _traverse(result[i], mapper, `${i}`, isSeen);
     }
@@ -35,7 +37,9 @@ const _traverse = async (source, mapper, key = "", isSeen = new WeakMap()) => {
 
   if (isObjectLike(data)) {
     const result = { ...data };
-    isSeen.set(source, result);
+    try {
+      isSeen.set(source, result);
+    } catch {}
     for (const [key, value] of Object.entries(result)) {
       result[key] = await _traverse(value, mapper, `${key}`, isSeen);
     }
