@@ -6,6 +6,9 @@ const isObjectLike = (value) =>
   !(value instanceof Date) &&
   !(globalThis.Blob && value instanceof globalThis.Blob);
 
+export const STOP = Symbol('async-traverse-stop');
+export const REMOVE = Symbol('async-traverse-remove');
+
 /**
  * Recursively traverses an object or array and applies a function to each value.
  * Mainly the same as JSON.parse(JSON.stringify(input, reviver)) but faster & async.
@@ -30,7 +33,11 @@ const _traverse = async (source, mapper, key = '', isSeen = new WeakMap()) => {
       isSeen.set(source, result);
     } catch {}
     for (let i = 0; i < data.length; i++) {
-      result[i] = await _traverse(result[i], mapper, `${i}`, isSeen);
+      const val = await _traverse(result[i], mapper, `${i}`, isSeen);
+      if (val === REMOVE) {
+        continue;
+      }
+      result[i] = val === STOP ? result[i] : val;
     }
     return result;
   }
@@ -41,7 +48,13 @@ const _traverse = async (source, mapper, key = '', isSeen = new WeakMap()) => {
       isSeen.set(source, result);
     } catch {}
     for (const [key, value] of Object.entries(result)) {
-      result[key] = await _traverse(value, mapper, `${key}`, isSeen);
+      const val = await _traverse(value, mapper, `${key}`, isSeen);
+
+      if (val === REMOVE) {
+        delete result[key];
+      } else {
+        result[key] = val === STOP ? value : val;
+      }
     }
     return result;
   }

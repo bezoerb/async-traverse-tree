@@ -55,6 +55,34 @@ traverse(data, mapper)
   });
 ```
 
+### Controlling Tree Traversal
+
+The async-traverse-tree module exports two symbols that can be used to control the traversal process:
+
+* **STOP**: Returning STOP from your mapper function will halt traversal of the current branch. No child nodes will be processed.
+* **REMOVE**: Returning REMOVE from your mapper function will remove the current key/value pair from the tree.
+
+
+```javascript
+import { traverse, STOP, REMOVE } from 'async-traverse-tree';
+
+const mapper = async (key, value) => {
+
+  // stop traversing deeper into this branch
+  if (skipCondition) {
+    return STOP
+  }
+
+  // remove this key/value completely
+    if (removeCondition) {
+    return REMOVE
+  }
+
+  // Apply your custom logic here asynchronously
+  return value;
+};
+```
+
 ## Motivation
 
 An easy way to iterate over an object-like structure is to use `JSON.parse(JSON.stringify(obj), (key, value) => ... )`.\
