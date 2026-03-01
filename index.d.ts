@@ -1,4 +1,14 @@
 /**
+ * A symbol that stops traversal of the current value and returns it as-is.
+ */
+export declare const STOP: unique symbol;
+
+/**
+ * A symbol that removes the current key/value from the result.
+ */
+export declare const REMOVE: unique symbol;
+
+/**
  * A custom function to map and modify values during traversal.
  */
 export type Mapper = (
