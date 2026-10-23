@@ -83,6 +83,31 @@ const mapper = async (key, value) => {
 };
 ```
 
+## Development
+
+Use Node.js 22.20+, 24.12+, or 26+ with npm 11.19.1 for the development tools. CI tests Node.js 22, 24, and 26.
+The library's declared runtime requirement remains Node.js 16+, but CI does not test older releases.
+
+```shell
+npm ci --ignore-scripts
+npm run test:ci
+npm run benchmark
+npm run audit
+```
+
+Dependency install scripts are disabled in `.npmrc`.
+
+The benchmark retains the comparison with native JSON and runs without coverage instrumentation. Its speed assertion can fail on different runtimes or runners.
+CI reports benchmark failures separately from the required correctness tests.
+
+## Security considerations
+
+Validate untrusted input before traversal and limit its depth and size. Deep trees can exhaust the JavaScript call stack.
+Traversal has no node budget or timeout. Use a worker with a termination deadline when you need a hard resource limit.
+
+Getters, proxies, and mapper functions can execute application code. Only traverse trusted JavaScript objects or validated JSON data.
+If a mapper fetches URLs, the caller must enforce URL restrictions and request timeouts.
+
 ## Motivation
 
 An easy way to iterate over an object-like structure is to use `JSON.parse(JSON.stringify(obj), (key, value) => ... )`.\
