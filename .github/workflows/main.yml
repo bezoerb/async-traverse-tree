@@ -40,7 +40,7 @@ jobs:
 
       - name: Report development dependency advisories
         if: matrix.node == 24 && matrix.os == 'ubuntu-latest'
-        # The unpatched braces advisory is assessed in SECURITY-AUDIT.md.
+        # GHSA-vfj7-8cjw-p6xm in AVA's braces dependency has no patched release.
         continue-on-error: true
         run: npm run audit
 

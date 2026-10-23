@@ -95,7 +95,7 @@ npm run benchmark
 npm run audit
 ```
 
-Dependency install scripts are disabled in `.npmrc`. See the [security assessment](https://github.com/bezoerb/async-traverse-tree/blob/main/SECURITY-AUDIT.md) for known development dependency advisories.
+Dependency install scripts are disabled in `.npmrc`.
 
 The benchmark retains the comparison with native JSON and runs without coverage instrumentation. Its speed assertion can fail on different runtimes or runners.
 CI reports benchmark failures separately from the required correctness tests.
