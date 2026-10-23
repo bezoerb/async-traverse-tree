@@ -1,5 +1,7 @@
 name: CI
 on: [push, pull_request]
+permissions:
+  contents: read
 env:
   CI: true
 
@@ -11,29 +13,42 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [16, 18, 20]
+        node: [22, 24, 26]
         os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: ${{ matrix.node }}
           cache: npm
 
+      - name: Set up npm
+        run: npm install --global npm@11.19.1 --ignore-scripts
+
       - name: Install npm dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
+
+      - name: Audit runtime dependencies
+        if: matrix.node == 24 && matrix.os == 'ubuntu-latest'
+        run: npm run audit:runtime
+
+      - name: Report development dependency advisories
+        if: matrix.node == 24 && matrix.os == 'ubuntu-latest'
+        # The unpatched braces advisory is assessed in SECURITY-AUDIT.md.
+        continue-on-error: true
+        run: npm run audit
 
       - name: Run tests
         run: npm run test:ci
 
       - name: Coveralls Parallel
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2
         with:
           github-token: ${{ secrets.github_token }}
           flag-name: run-${{ matrix.os }}-${{ matrix.node }}
@@ -44,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Coveralls Finished
-      uses: coverallsapp/github-action@master
+      uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2
       with:
         github-token: ${{ secrets.github_token }}
         parallel-finished: true
