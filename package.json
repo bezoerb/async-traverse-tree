@@ -16,6 +16,7 @@
     "test": "c8 ava",
     "coverage": "c8 report --reporter=lcov",
     "test:ci": "npm run test && npm run coverage",
+    "benchmark": "node benchmark.js",
     "audit": "npm audit",
     "audit:runtime": "npm audit --omit=dev --audit-level=low"
   },

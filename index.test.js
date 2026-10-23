@@ -113,32 +113,6 @@ test('should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),map
   t.is(result, expected);
 });
 
-test('should be faster than JSON.parse', async (t) => {
-  t.timeout(20000);
-  const input = {
-    foo: 'hello',
-    bar: 'world',
-    arr: ['a', 'b', 'c'],
-  };
-  const mapper = (key, value) => (typeof value === 'string' ? value.toUpperCase() : value);
-
-  const iterations = Array(1000000).fill(0);
-
-  const startTraverse = Date.now();
-  for (const _ of iterations) {
-    await traverse(input, mapper);
-  }
-  const timeTraverse = Date.now() - startTraverse;
-
-  const startNative = Date.now();
-  for (const _ of iterations) {
-    JSON.parse(JSON.stringify(input), mapper);
-  }
-  const timeNative = Date.now() - startNative;
-
-  t.true(timeTraverse < timeNative, `${timeTraverse} should be less than ${timeNative}`);
-});
-
 test('should handle circular references', async (t) => {
   const object = {
     one: 'one',
