@@ -4,6 +4,7 @@
   "description": "Asynchronously iterates and transforms tree-like structures.",
   "exports": "./index.js",
   "type": "module",
+  "packageManager": "npm@11.19.1",
   "engines": {
     "node": ">=16"
   },
@@ -14,7 +15,9 @@
   "scripts": {
     "test": "c8 ava",
     "coverage": "c8 report --reporter=lcov",
-    "test:ci": "npm run test && npm run coverage"
+    "test:ci": "npm run test && npm run coverage",
+    "audit": "npm audit",
+    "audit:runtime": "npm audit --omit=dev --audit-level=low"
   },
   "files": [
     "index.js",
@@ -32,8 +35,8 @@
     "email": "ben@sommerlaune.com"
   },
   "devDependencies": {
-    "ava": "^5.3.1",
-    "c8": "^8.0.1"
+    "ava": "^8.1.1",
+    "c8": "^12.0.0"
   },
   "license": "MIT"
 }
