@@ -85,7 +85,7 @@ const mapper = async (key, value) => {
 
 ## Development
 
-Use Node.js 22.20+, 24.12+, or 26+ with npm 11.19.1 for the development tools. CI tests Node.js 22, 24, and 26.
+Use Node.js 22.20+ with npm 11.19.1 for development. CI tests Node.js 22, 24, and 26.
 The library's declared runtime requirement remains Node.js 16+, but CI does not test older releases.
 
 ```shell
@@ -97,9 +97,9 @@ npm run audit
 
 Dependency install scripts are disabled in `.npmrc`.
 
-Temporary overrides for `@vercel/nft` and `test-exclude` select patched `glob` and `minimatch` releases.
-Integration tests check coverage discovery and dynamic asset tracing with these versions.
-Remove the overrides when upstream dependencies declare the patched version ranges.
+Tests use `node:test` and `node:assert/strict`, with no third-party test dependencies.
+Run `npm test` for tests alone. `npm run coverage` runs the tests with Node's experimental V8 coverage and writes `coverage/lcov.info` for Coveralls.
+`npm run test:ci` runs the same coverage command. Coverage includes the library implementation in `index.js`.
 
 The benchmark retains the comparison with native JSON and runs without coverage instrumentation. Its speed assertion can fail on different runtimes or runners.
 CI reports benchmark failures separately from the required correctness tests.
