@@ -97,6 +97,10 @@ npm run audit
 
 Dependency install scripts are disabled in `.npmrc`.
 
+Temporary overrides for `@vercel/nft` and `test-exclude` select patched `glob` and `minimatch` releases.
+Integration tests check coverage discovery and dynamic asset tracing with these versions.
+Remove the overrides when upstream dependencies declare the patched version ranges.
+
 The benchmark retains the comparison with native JSON and runs without coverage instrumentation. Its speed assertion can fail on different runtimes or runners.
 CI reports benchmark failures separately from the required correctness tests.
 
