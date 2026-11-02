@@ -98,7 +98,7 @@ npm run audit
 Dependency install scripts are disabled in `.npmrc`.
 
 Tests use `node:test` and `node:assert/strict`, with no third-party test dependencies.
-Run `npm test` for tests alone. `npm run coverage` runs the tests with Node's experimental V8 coverage and writes `coverage/lcov.info` for Coveralls.
+Run `npm test` for tests alone. `npm run coverage` runs the tests with Node's experimental V8 coverage and writes `lcov.info` for Coveralls.
 `npm run test:ci` runs the same coverage command. Coverage includes the library implementation in `index.js`.
 
 The benchmark retains the comparison with native JSON and runs without coverage instrumentation. Its speed assertion can fail on different runtimes or runners.

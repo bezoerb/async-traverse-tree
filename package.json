@@ -14,7 +14,7 @@
   },
   "scripts": {
     "test": "node --test",
-    "coverage": "node scripts/coverage.js",
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include=index.js --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=lcov.info index.test.js",
     "test:ci": "npm run coverage",
     "benchmark": "node benchmark.js",
     "audit": "npm audit",
