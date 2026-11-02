@@ -1,13 +1,14 @@
-import test from 'ava';
+import test from 'node:test';
+import assert from 'node:assert/strict';
 import { traverse, STOP, REMOVE } from './index.js';
 
-test('should return the input if it is a primitive', async (t) => {
+test('should return the input if it is a primitive', async () => {
   const input = 'hello world';
   const result = await traverse(input);
-  t.is(result, input);
+  assert.strictEqual(result, input);
 });
 
-test('should return a new object with the same keys and traversed values', async (t) => {
+test('should return a new object with the same keys and traversed values', async () => {
   const blob = globalThis.Blob ? new globalThis.Blob() : null;
   const date = new Date();
   const regexp = new RegExp(/foo/);
@@ -35,10 +36,10 @@ test('should return a new object with the same keys and traversed values', async
   };
 
   const result = await traverse(input, mapper);
-  t.like(result, expected);
+  assert.deepStrictEqual(result, expected);
 });
 
-test('should return a new array with the same elements and traversed values', async (t) => {
+test('should return a new array with the same elements and traversed values', async () => {
   const input = [
     {
       foo: 'hello',
@@ -57,10 +58,10 @@ test('should return a new array with the same elements and traversed values', as
   ];
   const mapper = (key, value) => (typeof value === 'string' ? value.toUpperCase() : value);
   const result = await traverse(input, mapper);
-  t.like(result, expected);
+  assert.deepStrictEqual(result, expected);
 });
 
-test('should handle null and undefined values', async (t) => {
+test('should handle null and undefined values', async () => {
   const input = {
     foo: null,
     bar: undefined,
@@ -71,10 +72,10 @@ test('should handle null and undefined values', async (t) => {
   };
   const result = await traverse(input);
 
-  t.like(result, expected);
+  assert.deepStrictEqual(result, expected);
 });
 
-test('should handle Promises returned by the mapper function', async (t) => {
+test('should handle Promises returned by the mapper function', async () => {
   const input = {
     foo: 'hello',
     bar: 'world',
@@ -85,10 +86,10 @@ test('should handle Promises returned by the mapper function', async (t) => {
   };
   const mapper = async (key, value) => (typeof value === 'string' ? await Promise.resolve(value.toUpperCase()) : value);
   const result = await traverse(input, mapper);
-  t.like(result, expected);
+  assert.deepStrictEqual(result, expected);
 });
 
-test('should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),mapper)', async (t) => {
+test('should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),mapper)', async () => {
   const data = [{ a: 1, b: true, c: { x: 1 }, d: [1, { y: 2 }] }, 'abc', { empty: [{ remove: 'me' }] }];
   const mapper = (key, value) => {
     if (key === 'a') {
@@ -106,14 +107,15 @@ test('should act as a drop-in replacement for JSON.parse(JSON.stringify(obj),map
     if (typeof value === 'boolean') {
       return !value;
     }
+    return value;
   };
 
   const expected = JSON.parse(JSON.stringify(data), mapper);
   const result = await traverse(data, mapper);
-  t.is(result, expected);
+  assert.deepStrictEqual(result, expected);
 });
 
-test('should handle circular references', async (t) => {
+test('should handle circular references', async () => {
   const object = {
     one: 'one',
     array: ['two'],
@@ -132,10 +134,10 @@ test('should handle circular references', async (t) => {
 
   const result = await traverse(object, (_, val) => (typeof val === 'string' ? val.toUpperCase() : val));
 
-  t.deepEqual(result, expected);
+  assert.deepStrictEqual(result, expected);
 });
 
-test('should not modify source object', async (t) => {
+test('should not modify source object', async () => {
   const source = {
     object: { foo: 'bar' },
     array: ['two'],
@@ -153,11 +155,11 @@ test('should not modify source object', async (t) => {
     array: ['two'],
   };
 
-  t.deepEqual(result, expectedResult);
-  t.deepEqual(source, expectedSource);
+  assert.deepStrictEqual(result, expectedResult);
+  assert.deepStrictEqual(source, expectedSource);
 });
 
-test('should stop traversing when STOP is returned', async (t) => {
+test('should stop traversing when STOP is returned', async () => {
   const source = {
     process: {
       a: 1,
@@ -192,10 +194,10 @@ test('should stop traversing when STOP is returned', async (t) => {
     },
   };
 
-  t.deepEqual(result, expected);
+  assert.deepStrictEqual(result, expected);
 });
 
-test('should remove key when REMOVE is returned', async (t) => {
+test('should remove key when REMOVE is returned', async () => {
   const source = {
     process: {
       a: 1,
@@ -229,5 +231,5 @@ test('should remove key when REMOVE is returned', async (t) => {
     },
   };
 
-  t.deepEqual(result, expected);
+  assert.deepStrictEqual(result, expected);
 });

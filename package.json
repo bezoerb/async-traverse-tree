@@ -13,9 +13,9 @@
     "url": "https://github.com/bezoerb/async-traverse-tree.git"
   },
   "scripts": {
-    "test": "c8 ava",
-    "coverage": "c8 report --reporter=lcov",
-    "test:ci": "npm run test && npm run coverage",
+    "test": "node --test",
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include=index.js --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=lcov.info index.test.js",
+    "test:ci": "npm run coverage",
     "benchmark": "node benchmark.js",
     "audit": "npm audit",
     "audit:runtime": "npm audit --omit=dev --audit-level=low"
@@ -34,10 +34,6 @@
   "author": {
     "name": "Ben Zörb",
     "email": "ben@sommerlaune.com"
-  },
-  "devDependencies": {
-    "ava": "^8.1.1",
-    "c8": "^12.0.0"
   },
   "license": "MIT"
 }
